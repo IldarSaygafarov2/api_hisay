@@ -237,3 +237,7 @@ JAZZMIN_SETTINGS = {
     # Add a language dropdown into the admin
     "language_chooser": False,
 }
+
+SMS_BASE_URL = 'qyypgm.api.infobip.com'
+SMS_API_KEY = os.getenv('SMS_API_KEY')
+SMS_SENDER = 'InfoSMS'

@@ -1,8 +1,6 @@
-import requests
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from hisay import settings
 from . import helpers
 from .models import SimpleUserProfile
 
@@ -24,11 +22,8 @@ def save_user(request):
     user.verification_code = code
     user.save()
 
-    requests.post(url=settings.telegram_msg_url.format(
-        token=settings.BOT_TOKEN,
-        chat_id=user.tg_chat_id,
-        text=code
-    ))
+    helpers.send_sms_code(data, code)
+
     return Response({
         "status": True
     })
@@ -52,5 +47,3 @@ def check_verification_code(request):
     if not user:
         return Response({"status": False})
     return Response({'status': True, "user_id": user.first().pk})
-
-
