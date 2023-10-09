@@ -22,9 +22,9 @@ def send_sms_code(data, code):
     sms_conn.request("POST", "/sms/2/text/advanced", payload1, headers)
 
     # requests.post(url, data=payload1, headers=headers)
-    res = sms_conn.getresponse()
-    data = res.read()
-    print(data.decode("utf-8"))
+    # res = sms_conn.getresponse()
+    # data = res.read()
+    # print(data.decode("utf-8"))
 
 
 def generate_code():
