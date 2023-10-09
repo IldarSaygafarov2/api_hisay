@@ -17,8 +17,10 @@ def send_sms_code(data, code):
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
-    url = 'https://' + settings.SMS_BASE_URL + "/sms/2/text/advanced"
-    requests.post(url, data=payload1, headers=headers)
+    # url = 'https://' + settings.SMS_BASE_URL + "/sms/2/text/advanced"
+    sms_conn.request("POST", "/sms/2/text/advanced", payload1, headers)
+
+    # requests.post(url, data=payload1, headers=headers)
     res = sms_conn.getresponse()
     data = res.read()
     print(data.decode("utf-8"))
