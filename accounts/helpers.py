@@ -12,6 +12,7 @@ def send_sms_code(data, code):
                                                        "[{\"to\":\"" + data['phone_number'].replace('+', '') + "\"}]," \
                                                                                                                "\"text\":\"" + \
                str(code) + "\"}]}"
+    print(settings.SMS_API_KEY)
     headers = {
         'Authorization': settings.SMS_API_KEY,
         'Content-Type': 'application/json',
