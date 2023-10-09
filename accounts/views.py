@@ -1,5 +1,7 @@
+import requests
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
 from hisay import settings
 from . import helpers
 from .models import SimpleUserProfile
@@ -22,11 +24,14 @@ def save_user(request):
     user.verification_code = code
     user.save()
 
-    helpers.send_sms_code(data, code)
-
+    # helpers.send_sms_code(data, code)
+    requests.post(url=settings.telegram_msg_url.format(
+        token=settings.BOT_TOKEN,
+        chat_id=user.tg_chat_id,
+        text=code
+    ))
     return Response({
         "status": True,
-        'token': settings.SMS_API_KEY
     })
 
 
