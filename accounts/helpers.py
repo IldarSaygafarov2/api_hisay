@@ -12,14 +12,13 @@ def send_sms_code(data, code):
                                                        "[{\"to\":\"" + data['phone_number'].replace('+', '') + "\"}]," \
                                                                                                                "\"text\":\"" + \
                str(code) + "\"}]}"
-    print(settings.SMS_API_KEY)
     headers = {
         'Authorization': settings.SMS_API_KEY,
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
     # url = 'https://' + settings.SMS_BASE_URL + "/sms/2/text/advanced"
-    sms_conn.request("POST", "/sms/2/text/advanced", payload1, headers)
+    sms_conn.request("POST", "/sms/2/text/advanced", str(payload1), headers)
 
     # requests.post(url, data=payload1, headers=headers)
     # res = sms_conn.getresponse()
