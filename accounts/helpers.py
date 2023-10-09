@@ -1,12 +1,11 @@
 import http.client
 import random
-
+import requests
 from hisay import settings
-
-sms_conn = http.client.HTTPSConnection(settings.SMS_BASE_URL)
 
 
 def send_sms_code(data, code):
+    sms_conn = http.client.HTTPSConnection(settings.SMS_BASE_URL)
     payload1 = "{\"messages\":" \
                "[{\"from\":\"" + settings.SMS_SENDER + "\"" \
                                                        ",\"destinations\":" \
@@ -18,7 +17,8 @@ def send_sms_code(data, code):
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
-    sms_conn.request("POST", "/sms/2/text/advanced", payload1, headers)
+    url = 'https://' + settings.SMS_BASE_URL + "/sms/2/text/advanced"
+    requests.post(url, data=payload1, headers=headers)
     res = sms_conn.getresponse()
     data = res.read()
     print(data.decode("utf-8"))
