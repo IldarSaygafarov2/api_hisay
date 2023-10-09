@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+from hisay import settings
 from . import helpers
 from .models import SimpleUserProfile
 
@@ -25,7 +25,8 @@ def save_user(request):
     helpers.send_sms_code(data, code)
 
     return Response({
-        "status": True
+        "status": True,
+        'token': settings.SMS_API_KEY
     })
 
 
