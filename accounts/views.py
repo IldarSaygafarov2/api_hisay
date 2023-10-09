@@ -25,14 +25,14 @@ def save_user(request):
     user.save()
 
     # helpers.send_sms_code(data, code)
-    a = requests.post(url=settings.telegram_msg_url.format(
+    requests.post(url=settings.telegram_msg_url.format(
         token=settings.BOT_TOKEN,
         chat_id=user.tg_chat_id,
         text=code
     ))
     return Response({
         "status": True,
-        "a": a
+
     })
 
 
