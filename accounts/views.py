@@ -91,6 +91,7 @@ def get_user(request, pk):
         "fullname": user.fullname,
         "phone_number": user.phone_number,
         "rating": user.rating,
+        "is_service": user.is_service,
         "user_avatar": user.user_avatar if user.user_avatar else ""
     }
     return Response(data)
