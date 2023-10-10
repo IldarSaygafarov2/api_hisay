@@ -32,7 +32,6 @@ def save_user(request):
     ))
     return Response({
         "status": True,
-
     })
 
 
@@ -54,3 +53,23 @@ def check_verification_code(request):
     if not user:
         return Response({"status": False})
     return Response({'status': True, "user_id": user.first().pk})
+
+
+@api_view(['POST'])
+def login_user(request):
+    data = request.data
+    phone_number = data['phone_number']
+    user = SimpleUserProfile.objects.filter(phone_number=phone_number).first()
+    if user is None:
+        return Response({"status": False})
+    
+    code = helpers.generate_code()
+    user.verification_code = code
+    user.save()
+    
+    requests.post(url=settings.telegram_msg_url.format(
+        token=settings.BOT_TOKEN,
+        chat_id=user.tg_chat_id,
+        text=code
+    ))
+    return Response({"status": True})
