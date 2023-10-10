@@ -1,6 +1,28 @@
 from django.db import models
 
 
+class Region(models.Model):
+    name = models.CharField(verbose_name="Название области или региона", max_length=255, unique=True)
+    
+    def __str__(self) -> str:
+        return self.name
+    
+    class Meta:
+        verbose_name = "Регион/Область"
+        verbose_name_plural = "Регионы/Области"
+    
+
+class City(models.Model):
+    name = models.CharField(verbose_name="Название города", max_length=255, unique=True)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name="cities")
+    
+    def __str__(self) -> str:
+        return f'{self.region}: {self.name}'
+    
+    class Meta:
+        verbose_name = "Город"
+        verbose_name_plural = "Города"
+
 class Category(models.Model):
     name = models.CharField(verbose_name="Название категории", max_length=155, unique=True)
     
