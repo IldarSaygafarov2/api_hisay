@@ -23,8 +23,9 @@ class SimpleUserProfile(models.Model):
     info_about = models.TextField(verbose_name="О себе", null=True, blank=True)
     service_photo_certificate = models.ImageField(
         verbose_name="Фото сертификата сервиса", upload_to="services/certificates/", null=True, blank=True)
-    city = models.ForeignKey(
-        City, on_delete=models.SET_NULL, null=True, blank=True, related_name="cities", verbose_name='Город')
+    # city = models.ForeignKey(
+    #     City, on_delete=models.SET_NULL, null=True, blank=True, related_name="cities", verbose_name='Город')
+    city = models.CharField(max_length=255, verbose_name="Город", null=True, blank=True)
     is_banned = models.BooleanField(verbose_name="Блокировка", default=False, null=True, blank=True)
     verification_code = models.CharField(
         max_length=6, blank=True, null=True, verbose_name='Код подтверждения')
