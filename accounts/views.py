@@ -93,7 +93,7 @@ def get_user(request, pk):
         "rating": user.rating,
         "is_service": user.is_service,
         "is_banned": user.is_banned,
-        "user_avatar": user.user_avatar if user.user_avatar else ""
+        "user_avatar": user.user_avatar.url if user.user_avatar else ""
     }
     return Response(data)
 
