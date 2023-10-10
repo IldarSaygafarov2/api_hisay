@@ -88,7 +88,7 @@ def get_user(request, pk):
         "id": user.pk,
         "tg_username": user.tg_username,
         "tg_chat_id": user.tg_chat_id,
-        "fullname": user.fullname,
+        "fullname": user.fullname.title(),
         "phone_number": user.phone_number,
         "rating": user.rating,
         "is_service": user.is_service,
