@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_dump_load_utf8',
     'rest_framework',
     'accounts.apps.AccountsConfig',
     'api.apps.ApiConfig'
