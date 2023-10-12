@@ -7,4 +7,5 @@ urlpatterns = [
     path('categories/', views.CategoryList.as_view()),
     path('questions-answers/', views.QuestionAnswerList.as_view()),
     path('mainpage/images/', views.ImageItemList.as_view()),
+    path('user_request/list/', views.UserRequestCreateListView.as_view())
 ]

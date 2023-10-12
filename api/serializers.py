@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Category, QuestionAnswer, ImageItem
+from .models import Category, QuestionAnswer, ImageItem, UserRequest
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -19,3 +19,9 @@ class ImageItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImageItem
         fields = ['pk', 'photo']
+
+
+class UserRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserRequest
+        fields = ['pk', 'body', 'location', 'price', 'photo', 'hashtags', 'category', 'author']

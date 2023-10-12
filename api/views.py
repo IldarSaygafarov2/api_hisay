@@ -1,8 +1,7 @@
 from rest_framework import generics
 
-from .models import Category, QuestionAnswer, ImageItem
-from .serializers import CategorySerializer, QuestionAnswerSerializer, ImageItemSerializer
-
+from .models import Category, QuestionAnswer, ImageItem, UserRequest
+from .serializers import CategorySerializer, QuestionAnswerSerializer, ImageItemSerializer, UserRequestSerializer
 
 
 class CategoryList(generics.ListAPIView):
@@ -19,3 +18,7 @@ class ImageItemList(generics.ListAPIView):
     queryset = ImageItem.objects.all()
     serializer_class = ImageItemSerializer
 
+
+class UserRequestCreateListView(generics.ListCreateAPIView):
+    queryset = UserRequest.objects.all()
+    serializer_class = UserRequestSerializer
