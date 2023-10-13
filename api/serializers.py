@@ -4,9 +4,16 @@ from .models import Category, QuestionAnswer, ImageItem, UserRequest
 
 
 class CategorySerializer(serializers.ModelSerializer):
+
+    subcategories = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field="name"
+    )
+
     class Meta:
         model = Category
-        fields = ['pk', 'name']
+        fields = ['pk', 'name', 'subcategories']
 
 
 class QuestionAnswerSerializer(serializers.ModelSerializer):

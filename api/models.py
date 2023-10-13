@@ -1,4 +1,5 @@
 from django.db import models
+
 from accounts.models import SimpleUserProfile
 
 
@@ -36,6 +37,19 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
 
+class Subcategory(models.Model):
+    name = models.CharField(verbose_name="Подкатегория", max_length=155, unique=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="subcategories",
+                                 verbose_name="Категория")
+
+    def __str__(self):
+        return f"{self.category}: {self.name}"
+
+    class Meta:
+        verbose_name = "Подкатегория"
+        verbose_name_plural = "Подкатегории"
+
+
 class QuestionAnswer(models.Model):
     question = models.CharField(verbose_name="Вопрос", max_length=255, unique=True)
     answer = models.TextField(verbose_name="Ответ")
@@ -62,7 +76,7 @@ class UserRequest(models.Model):
     price = models.CharField(verbose_name="Цена", max_length=255, default="Договорная")
     created_at = models.DateTimeField(auto_now_add=True)
     views = models.IntegerField(default=0, verbose_name="Кол-во просмотров")
-    photo = models.ImageField(verbose_name="Фото", upload_to="requests/photos/")
+    photo = models.ImageField(verbose_name="Фото", upload_to="requests/photos/", null=True, blank=True)
     hashtags = models.TextField(verbose_name="Хештег")
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, related_name="user_requests",
                                  verbose_name="Категория")
@@ -75,4 +89,3 @@ class UserRequest(models.Model):
     class Meta:
         verbose_name = "Заявка"
         verbose_name_plural = "Заявки"
-

@@ -22,3 +22,10 @@ class ImageItemList(generics.ListAPIView):
 class UserRequestCreateListView(generics.ListCreateAPIView):
     queryset = UserRequest.objects.all()
     serializer_class = UserRequestSerializer
+
+
+class UserRequestRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
+    queryset = UserRequest.objects.all()
+    serializer_class = UserRequestSerializer
+
+

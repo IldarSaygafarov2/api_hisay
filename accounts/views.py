@@ -1,12 +1,13 @@
 import requests
+from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from hisay import settings
 from . import helpers
 from .models import SimpleUserProfile
-from rest_framework import generics
 from .serializers import SimpleUserProfileSerializer
+from api.serializers import UserRequestSerializer
 
 
 @api_view(['POST'])
@@ -114,3 +115,21 @@ def switch_user(request):
 class UpdateSimpleUser(generics.UpdateAPIView):
     serializer_class = SimpleUserProfileSerializer
     queryset = SimpleUserProfile.objects.all()
+
+
+@api_view(["GET"])
+def get_services(request):
+    users = SimpleUserProfile.objects.filter(is_service=True)
+    serializer = SimpleUserProfileSerializer(users, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+def get_user_requests(request, pk):
+    user = SimpleUserProfile.objects.filter(pk=pk).first()
+    if user is None:
+        return Response({"status": False})
+
+    user_requests = user.user_requests.all()
+    serializer = UserRequestSerializer(user_requests, many=True)
+    return Response(serializer.data)

@@ -5,5 +5,5 @@ from .models import SimpleUserProfile
 class SimpleUserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = SimpleUserProfile
-        fields = ['pk', 'fullname', 'city',
+        fields = ['pk', 'fullname', 'is_service', 'city',
                   'education', 'info_about', 'user_avatar']

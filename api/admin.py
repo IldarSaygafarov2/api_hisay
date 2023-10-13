@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, QuestionAnswer, ImageItem, Region, City
+from .models import Category, QuestionAnswer, ImageItem, Region, City, Subcategory
 
 # Register your models here.
 
@@ -7,6 +7,7 @@ from .models import Category, QuestionAnswer, ImageItem, Region, City
 admin.site.register(Region)
 admin.site.register(City)
 admin.site.register(Category)
+admin.site.register(Subcategory)
 admin.site.register(QuestionAnswer)
 admin.site.register(ImageItem)
 
