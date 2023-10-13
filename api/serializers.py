@@ -15,6 +15,12 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['pk', 'name', "icon", 'subcategories']
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if not data['icon']:
+            data['icon'] = ""
+        return data
+
 
 class QuestionAnswerSerializer(serializers.ModelSerializer):
     class Meta:
