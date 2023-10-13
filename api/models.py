@@ -28,6 +28,7 @@ class City(models.Model):
 
 class Category(models.Model):
     name = models.CharField(verbose_name="Название категории", max_length=155, unique=True)
+    icon = models.FileField(verbose_name="Иконка", upload_to="categories/icons/", null=True)
 
     def __str__(self):
         return self.name
