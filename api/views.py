@@ -1,4 +1,6 @@
 from rest_framework import generics
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from .models import Category, QuestionAnswer, ImageItem, UserRequest
 from .serializers import CategorySerializer, QuestionAnswerSerializer, ImageItemSerializer, UserRequestSerializer
@@ -29,3 +31,12 @@ class UserRequestRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
     serializer_class = UserRequestSerializer
 
 
+@api_view(["GET"])
+def get_requests_by_category(request, category_id):
+    category = Category.objects.filter(pk=category_id).first()
+    if category is None:
+        return Response({"status": False})
+
+    user_requests = UserRequest.objects.filter(category=category)
+    serializer = UserRequestSerializer(user_requests, many=True)
+    return Response(serializer.data)
