@@ -13,7 +13,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['pk', 'name', 'subcategories']
+        fields = ['pk', 'name', "icon", 'subcategories']
 
 
 class QuestionAnswerSerializer(serializers.ModelSerializer):
