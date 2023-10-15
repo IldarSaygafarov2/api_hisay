@@ -37,4 +37,4 @@ class ImageItemSerializer(serializers.ModelSerializer):
 class UserRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserRequest
-        fields = ['pk', 'body', 'location', 'price', 'photo', 'hashtags', 'category', 'author']
+        fields = ['pk', 'body', 'location', 'created_at', 'price', 'photo', 'hashtags', 'category', 'author']
