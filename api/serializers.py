@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
 from .models import Category, QuestionAnswer, ImageItem, UserRequest
+from accounts.models import SimpleUserProfile
+from accounts.serializers import SimpleUserProfileSerializer
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -40,6 +42,14 @@ class UserRequestSerializer(serializers.ModelSerializer):
         read_only=False,
         slug_field='name'
     )
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        author = SimpleUserProfile.objects.get(pk=data['author'])
+        data['created_at'] = f'{instance.created_at.date()} {instance.created_at.strftime("%H:%M:%S")}'
+        data['username'] = author.tg_username
+        return data
+
     class Meta:
         model = UserRequest
         fields = ['pk', 'body', 'location', 'created_at', 'price', 'photo', 'hashtags', 'category', 'author']
