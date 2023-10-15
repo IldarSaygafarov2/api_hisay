@@ -35,6 +35,11 @@ class ImageItemSerializer(serializers.ModelSerializer):
 
 
 class UserRequestSerializer(serializers.ModelSerializer):
+    category = serializers.SlugRelatedField(
+        queryset=Category.objects.all(),
+        read_only=False,
+        slug_field='name'
+    )
     class Meta:
         model = UserRequest
         fields = ['pk', 'body', 'location', 'created_at', 'price', 'photo', 'hashtags', 'category', 'author']
