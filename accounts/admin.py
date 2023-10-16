@@ -6,4 +6,4 @@ from .models import SimpleUserProfile
 
 @admin.register(SimpleUserProfile)
 class SimpleUserProfileAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('pk', 'fullname')
