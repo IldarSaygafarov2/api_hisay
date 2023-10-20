@@ -35,6 +35,7 @@ def save_user(request):
     ))
     return Response({
         "status": True,
+        "id": user.pk
     })
 
 
@@ -76,7 +77,10 @@ def login_user(request):
         chat_id=user.tg_chat_id,
         text=code
     ))
-    return Response({"status": True})
+    return Response({
+        "status": True,
+        "id": user.pk
+    })
 
 
 @api_view(["GET"])
