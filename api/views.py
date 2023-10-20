@@ -46,7 +46,9 @@ class UserRequestRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
     serializer_class = UserRequestSerializer
 
     def get(self, request, *args, **kwargs):
-        queryset = UserRequest.objects.get(pk=kwargs['pk'])
+        queryset = UserRequest.objects.filter(pk=kwargs['pk']).first()
+        if queryset is None:
+            return Response({"status": False})
         ser = UserRequestSerializer(queryset, many=False)
         return Response(ser.data)
 
