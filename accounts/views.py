@@ -79,7 +79,7 @@ def login_user(request):
     ))
     return Response({
         "status": True,
-        "id": user.pk
+        "id": user.pk,
         "fullname": user.fullname
     })
 
