@@ -53,6 +53,10 @@ class UserRequestRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
         return Response(ser.data)
 
 
+class UserRequestDeleteView(generics.DestroyAPIView):
+    queryset = UserRequest.objects.all()
+    serializer_class = UserRequestSerializer
+
 
 
 @api_view(["GET"])

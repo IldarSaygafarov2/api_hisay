@@ -9,6 +9,7 @@ urlpatterns = [
     path('questions-answers/', views.QuestionAnswerList.as_view()),
     path('mainpage/images/', views.ImageItemList.as_view()),
     path('requests/', views.UserRequestCreateListView.as_view()),
-    path('requests/<str:pk>/', views.UserRequestRetrieveUpdateAPIView.as_view()),
+    path('requests/update/<str:pk>/', views.UserRequestRetrieveUpdateAPIView.as_view()),
+    path('requests/delete/<str:pk>/', views.UserRequestDeleteView.as_view()),
 
 ]
