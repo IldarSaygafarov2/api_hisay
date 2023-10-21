@@ -7,15 +7,15 @@ from accounts.serializers import SimpleUserProfileSerializer
 
 class CategorySerializer(serializers.ModelSerializer):
 
-    subcategories = serializers.SlugRelatedField(
+    hashtags = serializers.SlugRelatedField(
         many=True,
         read_only=True,
-        slug_field="name"
+        slug_field="tag"
     )
 
     class Meta:
         model = Category
-        fields = ['pk', 'name', "icon", 'subcategories']
+        fields = ['pk', 'name', "icon", 'hashtags']
 
     def to_representation(self, instance):
         data = super().to_representation(instance)

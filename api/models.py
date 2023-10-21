@@ -38,17 +38,17 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
 
-class Subcategory(models.Model):
-    name = models.CharField(verbose_name="Подкатегория", max_length=155, unique=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="subcategories",
-                                 verbose_name="Категория")
+class CategoryHashtag(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория", related_name="hashtags")
+    tag = models.CharField(verbose_name="Название тега", max_length=255)
 
     def __str__(self):
-        return f"{self.category}: {self.name}"
+        return f"{self.category}: {self.tag}"
 
     class Meta:
-        verbose_name = "Подкатегория"
-        verbose_name_plural = "Подкатегории"
+        verbose_name = "Хештег"
+        verbose_name_plural = "Хештеги"
+
 
 
 class QuestionAnswer(models.Model):
