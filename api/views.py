@@ -2,14 +2,31 @@ from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Category, QuestionAnswer, ImageItem, UserRequest
-from .serializers import CategorySerializer, QuestionAnswerSerializer, ImageItemSerializer, UserRequestSerializer
+from .models import Category, QuestionAnswer, ImageItem, UserRequest, Story
+from .serializers import CategorySerializer, QuestionAnswerSerializer, ImageItemSerializer, UserRequestSerializer, StorySerializer
 
 
 class CategoryList(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+
+class StoryListView(generics.ListAPIView):
+    queryset = Story.objects.all()
+    serializer_class = StorySerializer
+
+    def list(self, request, *args, **kwargs):
+        result = []
+        for item in self.get_queryset():
+            obj = {
+                "pk": item.pk,
+                "preview": item.preview.url if item.preview else '',
+                "images": [
+                    img.image.url for img in item.storyimage_set.all()
+                ]
+            }
+            result.append(obj)
+        return Response(result)
 
 # class CategoryRetrieveView(generics.RetrieveAPIView):
 #     queryset = Category.objects.all()

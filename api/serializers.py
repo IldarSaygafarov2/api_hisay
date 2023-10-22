@@ -1,8 +1,14 @@
 from rest_framework import serializers
 
-from .models import Category, QuestionAnswer, ImageItem, UserRequest
+from .models import Category, QuestionAnswer, ImageItem, UserRequest, Story
 from accounts.models import SimpleUserProfile
 from accounts.serializers import SimpleUserProfileSerializer
+
+
+class StorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Story
+        fields = ['pk', 'preview']
 
 
 class CategorySerializer(serializers.ModelSerializer):

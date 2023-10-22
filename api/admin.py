@@ -1,5 +1,14 @@
 from django.contrib import admin
-from .models import Category, QuestionAnswer, ImageItem, Region, City, UserRequest
+from .models import Category, QuestionAnswer, ImageItem, Region, City, UserRequest, Story, StoryImage
+
+
+class StoryImageInline(admin.TabularInline):
+    model = StoryImage
+    extra = 1
+
+
+class StoryAdmin(admin.ModelAdmin):
+    inlines = [StoryImageInline]
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -22,3 +31,4 @@ admin.site.register(City)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(QuestionAnswer, QuestionAnswerAdmin)
 admin.site.register(ImageItem)
+admin.site.register(Story, StoryAdmin)

@@ -90,3 +90,16 @@ class UserRequest(models.Model):
     class Meta:
         verbose_name = "Заявка"
         verbose_name_plural = "Заявки"
+
+
+class Story(models.Model):
+    preview = models.ImageField(verbose_name="Фото", upload_to="stories/previews/")
+
+    class Meta:
+        verbose_name = 'История'
+        verbose_name_plural = 'Истории'
+
+
+class StoryImage(models.Model):
+    story = models.ForeignKey(Story, on_delete=models.CASCADE, verbose_name="История")
+    image = models.ImageField(verbose_name="Фото", upload_to="stories/photos/")

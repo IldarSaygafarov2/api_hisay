@@ -11,4 +11,6 @@ urlpatterns = [
     path('requests/', views.UserRequestCreateListView.as_view()),
     path('requests/update/<str:pk>/', views.UserRequestRetrieveUpdateAPIView.as_view()),
     path('requests/delete/<str:pk>/', views.UserRequestDeleteView.as_view()),
+    path('stories/', views.StoryListView.as_view()),
+
 ]
