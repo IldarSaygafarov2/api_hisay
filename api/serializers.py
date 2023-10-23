@@ -58,4 +58,4 @@ class UserRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserRequest
-        fields = ['pk', 'body', 'location', 'created_at', 'price', 'photo', 'hashtags', 'category', 'author']
+        fields = ['pk', 'title', 'body', 'location', 'created_at', 'price', 'photo', 'hashtags', 'category', 'author']

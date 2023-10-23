@@ -72,6 +72,7 @@ class ImageItem(models.Model):
 
 
 class UserRequest(models.Model):
+    title = models.CharField(verbose_name="Заголовок статьи", max_length=155, default="")
     body = models.TextField(verbose_name="Описание заявки")
     location = models.CharField(verbose_name="Город", max_length=255)
     price = models.CharField(verbose_name="Цена", max_length=255, default="Договорная")
