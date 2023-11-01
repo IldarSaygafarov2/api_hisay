@@ -17,6 +17,11 @@ class CategoryList(generics.ListAPIView):
     serializer_class = CategorySerializer
 
 
+class CategoryDetailView(generics.RetrieveAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
 class StoryListView(generics.ListAPIView):
     queryset = Story.objects.all()
     serializer_class = StorySerializer
@@ -60,6 +65,7 @@ class UserRequestCreateListView(generics.ListCreateAPIView):
         hashtags = list(set(data.get("hashtags").split(', ')))
 
         for tag in hashtags:
+            tag = tag.replace("#", "")
             item = CategoryHashtag.objects.create(
                 category=category,
                 tag=tag
@@ -95,6 +101,4 @@ def get_requests_by_category(request, category_id):
     user_requests = UserRequest.objects.filter(category=category)
 
     serializer = UserRequestSerializer(user_requests, many=True)
-    print(request.META)
-    print(request.META['HTTP_HOST'])
     return Response(serializer.data)
