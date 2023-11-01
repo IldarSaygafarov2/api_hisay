@@ -50,7 +50,6 @@ class CategoryHashtag(models.Model):
         verbose_name_plural = "Хештеги"
 
 
-
 class QuestionAnswer(models.Model):
     question = models.CharField(verbose_name="Вопрос", max_length=255, unique=True)
     answer = models.TextField(verbose_name="Ответ")
@@ -74,8 +73,7 @@ class ImageItem(models.Model):
 class UserRequest(models.Model):
     title = models.CharField(verbose_name="Заголовок статьи", max_length=155, default="")
     body = models.TextField(verbose_name="Описание заявки")
-    location = models.CharField(verbose_name="Город", max_length=255)
-    price = models.CharField(verbose_name="Цена", max_length=255, default="Договорная")
+    location = models.CharField(verbose_name="Локация", max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     views = models.IntegerField(default=0, verbose_name="Кол-во просмотров")
     photo = models.ImageField(verbose_name="Фото", upload_to="requests/photos/", null=True, blank=True)

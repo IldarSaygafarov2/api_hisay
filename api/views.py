@@ -2,8 +2,14 @@ from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Category, QuestionAnswer, ImageItem, UserRequest, Story
-from .serializers import CategorySerializer, QuestionAnswerSerializer, ImageItemSerializer, UserRequestSerializer, StorySerializer
+from .models import Category, QuestionAnswer, ImageItem, UserRequest, Story, CategoryHashtag
+from .serializers import (
+    CategorySerializer,
+    QuestionAnswerSerializer,
+    ImageItemSerializer,
+    UserRequestSerializer,
+    StorySerializer
+)
 
 
 class CategoryList(generics.ListAPIView):
@@ -28,15 +34,6 @@ class StoryListView(generics.ListAPIView):
             result.append(obj)
         return Response(result)
 
-# class CategoryRetrieveView(generics.RetrieveAPIView):
-#     queryset = Category.objects.all()
-#
-#     def get(self, request, *args, **kwargs):
-#         category = Category.objects.get(pk=kwargs['category_id'])
-#         user_requests = UserRequest.objects.filter(category=category)
-#         serializer = UserRequestSerializer(user_requests, many=True)
-#         return Response(serializer.data)
-
 
 class QuestionAnswerList(generics.ListAPIView):
     queryset = QuestionAnswer.objects.all()
@@ -57,6 +54,20 @@ class UserRequestCreateListView(generics.ListCreateAPIView):
         ser = UserRequestSerializer(queryset, many=True)
         return Response(ser.data)
 
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        category = Category.objects.get(name=data.get('category'))
+        hashtags = list(set(data.get("hashtags").split(', ')))
+
+        for tag in hashtags:
+            item = CategoryHashtag.objects.create(
+                category=category,
+                tag=tag
+            )
+            item.save()
+
+        return super().create(request, *args, **kwargs)
+
 
 class UserRequestRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
     queryset = UserRequest.objects.all()
@@ -73,7 +84,6 @@ class UserRequestRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
 class UserRequestDeleteView(generics.DestroyAPIView):
     queryset = UserRequest.objects.all()
     serializer_class = UserRequestSerializer
-
 
 
 @api_view(["GET"])

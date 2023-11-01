@@ -1,9 +1,14 @@
 from django.contrib import admin
-from .models import Category, QuestionAnswer, ImageItem, Region, City, UserRequest, Story, StoryImage
+from .models import Category, CategoryHashtag, QuestionAnswer, ImageItem, Region, City, UserRequest, Story, StoryImage
 
 
 class StoryImageInline(admin.TabularInline):
     model = StoryImage
+    extra = 1
+
+
+class CategoryHashtagAdmin(admin.TabularInline):
+    model = CategoryHashtag
     extra = 1
 
 
@@ -14,6 +19,7 @@ class StoryAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("pk", "name")
     list_display_links = ("pk", "name")
+    inlines = [CategoryHashtagAdmin]
 
 
 class QuestionAnswerAdmin(admin.ModelAdmin):
