@@ -2,6 +2,8 @@ from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from accounts.models import SimpleUserProfile
+from .utils import get_address_by_loc
 from .models import Category, QuestionAnswer, ImageItem, UserRequest, Story, CategoryHashtag
 from .serializers import (
     CategorySerializer,
@@ -61,8 +63,17 @@ class UserRequestCreateListView(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         data = request.data
+        # 41.282274, 69.308211
+
+        address = get_address_by_loc(data.get('location'))
         category = Category.objects.get(name=data.get('category'))
+        profile = SimpleUserProfile.objects.get(pk=data.get('author'))
         hashtags = list(set(data.get("hashtags").split(', ')))
+
+        data_dict = {k: data.get(k) for k in data.keys() if k != 'csrfmiddlewaretoken'}
+        data_dict['category'] = category
+        data_dict['location'] = address
+        data_dict['author'] = profile
 
         for tag in hashtags:
             tag = tag.replace("#", "")
@@ -72,7 +83,12 @@ class UserRequestCreateListView(generics.ListCreateAPIView):
             )
             item.save()
 
-        return super().create(request, *args, **kwargs)
+        new_request = UserRequest.objects.create(
+            **data_dict
+        )
+        new_request.save()
+        serializer = UserRequestSerializer(new_request, many=False)
+        return Response(serializer.data)
 
 
 class UserRequestRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
