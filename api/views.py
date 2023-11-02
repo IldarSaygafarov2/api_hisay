@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from accounts.models import SimpleUserProfile
-from .utils import get_address_by_loc
+from .utils import get_address_by_coordinates
 from .models import Category, QuestionAnswer, ImageItem, UserRequest, Story, CategoryHashtag
 from .serializers import (
     CategorySerializer,
@@ -65,7 +65,7 @@ class UserRequestCreateListView(generics.ListCreateAPIView):
         data = request.data
         # 41.282274, 69.308211
 
-        address = get_address_by_loc(data.get('location'))
+        address = get_address_by_coordinates(data.get("location"))
         category = Category.objects.get(name=data.get('category'))
         profile = SimpleUserProfile.objects.get(pk=data.get('author'))
         hashtags = list(set(data.get("hashtags").split(', ')))
