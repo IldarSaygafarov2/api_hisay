@@ -63,8 +63,6 @@ class UserRequestCreateListView(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-        # 41.282274, 69.308211
-
         address = get_address_by_coordinates(data.get("location"))
         category = Category.objects.get(name=data.get('category'))
         profile = SimpleUserProfile.objects.get(pk=data.get('author'))

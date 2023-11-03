@@ -242,3 +242,4 @@ JAZZMIN_SETTINGS = {
 SMS_BASE_URL = 'qyypgm.api.infobip.com'
 SMS_API_KEY = os.getenv('SMS_API_KEY')
 SMS_SENDER = 'InfoSMS'
+MAPS_API_KEY = "AIzaSyBG9BXt7_M-xJA2EvUS6HGhRK8MvpsFqGM"

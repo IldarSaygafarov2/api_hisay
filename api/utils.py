@@ -1,7 +1,8 @@
-from geopy.geocoders import Nominatim
+from django.conf import settings
+from geopy import GoogleV3
 
 
 def get_address_by_coordinates(coordinates: str):
-    geocoder = Nominatim(user_agent="hisay")
-    result = geocoder.reverse(coordinates)
+    locator = GoogleV3(api_key=settings.MAPS_API_KEY, domain="maps.google.ru")
+    result = locator.reverse(coordinates)
     return result.address
