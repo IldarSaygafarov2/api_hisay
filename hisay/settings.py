@@ -26,7 +26,8 @@ INSTALLED_APPS = [
     'django_dump_load_utf8',
     'rest_framework',
     'accounts.apps.AccountsConfig',
-    'api.apps.ApiConfig'
+    'api.apps.ApiConfig',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -243,3 +244,7 @@ SMS_BASE_URL = 'qyypgm.api.infobip.com'
 SMS_API_KEY = os.getenv('SMS_API_KEY')
 SMS_SENDER = 'InfoSMS'
 MAPS_API_KEY = "AIzaSyBG9BXt7_M-xJA2EvUS6HGhRK8MvpsFqGM"
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}

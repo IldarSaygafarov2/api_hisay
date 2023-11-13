@@ -1,9 +1,10 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import filters
 
 from accounts.models import SimpleUserProfile
-from .utils import get_address_by_coordinates
 from .models import Category, QuestionAnswer, ImageItem, UserRequest, Story, CategoryHashtag
 from .serializers import (
     CategorySerializer,
@@ -12,6 +13,7 @@ from .serializers import (
     UserRequestSerializer,
     StorySerializer
 )
+from .utils import get_address_by_coordinates
 
 
 class CategoryList(generics.ListAPIView):
@@ -57,7 +59,12 @@ class UserRequestCreateListView(generics.ListCreateAPIView):
     serializer_class = UserRequestSerializer
 
     def list(self, request, *args, **kwargs):
-        queryset = UserRequest.objects.all()
+        query_params = self.request.query_params
+        if query_params:
+            queryset = UserRequest.objects.filter(hashtags__contains=query_params.get("hashtags"))
+        else:
+            queryset = UserRequest.objects.all()
+
         ser = UserRequestSerializer(queryset, many=True)
         return Response(ser.data)
 
