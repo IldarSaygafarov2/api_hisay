@@ -14,4 +14,6 @@ urlpatterns = [
     path('requests/delete/<str:pk>/', views.UserRequestDeleteView.as_view()),
     path('stories/', views.StoryListView.as_view()),
 
+    path('requests/responses/', views.ServiceUserRequestResponseList.as_view()),
+    path('requests/<int:pk>/responses/', views.ServicesRespondedToUserRequest.as_view()),
 ]

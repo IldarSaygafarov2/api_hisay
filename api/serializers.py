@@ -1,8 +1,13 @@
 from rest_framework import serializers
 
-from .models import Category, QuestionAnswer, ImageItem, UserRequest, Story
+from .models import Category, QuestionAnswer, ImageItem, UserRequest, Story, ServiceUserRequestResponse
 from accounts.models import SimpleUserProfile
-from accounts.serializers import SimpleUserProfileSerializer
+
+
+class ServiceUserRequestResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceUserRequestResponse
+        fields = ['service', 'user_request']
 
 
 class StorySerializer(serializers.ModelSerializer):

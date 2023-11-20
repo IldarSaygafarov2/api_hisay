@@ -1,5 +1,5 @@
 from django.db import models
-
+from .validators import validate_user_is_service
 from accounts.models import SimpleUserProfile
 
 
@@ -102,3 +102,17 @@ class Story(models.Model):
 class StoryImage(models.Model):
     story = models.ForeignKey(Story, on_delete=models.CASCADE, verbose_name="История")
     image = models.ImageField(verbose_name="Фото", upload_to="stories/photos/")
+
+
+class ServiceUserRequestResponse(models.Model):
+    service = models.ForeignKey(SimpleUserProfile, on_delete=models.CASCADE, verbose_name="Сервис",
+                                validators=[validate_user_is_service])
+    user_request = models.ForeignKey(UserRequest, on_delete=models.CASCADE, verbose_name="Заявка пользователя")
+
+    def __str__(self):
+        return f"{self.service}: {self.user_request.title}"
+
+    class Meta:
+        verbose_name = "Отклик сервиса"
+        verbose_name_plural = "Отклики сервиса"
+

@@ -1,19 +1,34 @@
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import filters
 
 from accounts.models import SimpleUserProfile
-from .models import Category, QuestionAnswer, ImageItem, UserRequest, Story, CategoryHashtag
+from .models import Category, QuestionAnswer, ImageItem, UserRequest, Story, CategoryHashtag, ServiceUserRequestResponse
 from .serializers import (
     CategorySerializer,
     QuestionAnswerSerializer,
     ImageItemSerializer,
     UserRequestSerializer,
-    StorySerializer
+    StorySerializer,
+    ServiceUserRequestResponseSerializer
 )
 from .utils import get_address_by_coordinates
+
+
+class ServiceUserRequestResponseList(generics.ListCreateAPIView):
+    queryset = ServiceUserRequestResponse.objects.all()
+    serializer_class = ServiceUserRequestResponseSerializer
+
+
+class ServicesRespondedToUserRequest(generics.RetrieveAPIView):
+    queryset = ServiceUserRequestResponse.objects.all()
+    serializer_class = ServiceUserRequestResponseSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        qs = self.get_queryset().filter(user_request=kwargs['pk'])
+        services_ids = list(set([i.service.pk for i in qs]))
+        # TODO: получить данные про сервис и отдать
+
 
 
 class CategoryList(generics.ListAPIView):
