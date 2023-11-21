@@ -1,9 +1,6 @@
 from django.db import models
 
 
-# Create your models here.
-
-
 class SimpleUserProfile(models.Model):
     tg_username = models.CharField(max_length=150, null=True, blank=True, verbose_name='Юзер в телеграмме')
     fullname = models.CharField(max_length=255, null=True, blank=True, verbose_name='ФИО')
@@ -29,3 +26,23 @@ class SimpleUserProfile(models.Model):
     class Meta:
         verbose_name = 'Пользователь приложения'
         verbose_name_plural = 'Пользователи приложения'
+
+
+class ServiceSetting(models.Model):
+    service_profile = models.ForeignKey(SimpleUserProfile, on_delete=models.CASCADE, verbose_name="Сервис")
+    passport_series = models.CharField(max_length=5, verbose_name="Серия паспорта", blank=True, default='')
+    passport_number = models.IntegerField(verbose_name="Номер паспорта", blank=True, default=0)
+    hashtags = models.TextField(verbose_name="Хештег")
+    category = models.ForeignKey('api.Category', on_delete=models.DO_NOTHING, verbose_name="Категория", blank=True,
+                                 null=True)
+    info_about = models.TextField(verbose_name="О себе", blank=True, default='')
+    education = models.TextField(verbose_name="Образование", blank=True, default='')
+    location = models.CharField(verbose_name="Локация", max_length=255, blank=True, default='')
+    address_by_location = models.CharField(verbose_name="Адрес", max_length=500, blank=True, default="")
+
+    def __str__(self):
+        return f'{self.service_profile}'
+
+    class Meta:
+        verbose_name = 'Настройка сервиса'
+        verbose_name_plural = 'Настройки сервиса'

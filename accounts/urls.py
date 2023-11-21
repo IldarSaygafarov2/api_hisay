@@ -8,6 +8,8 @@ urlpatterns = [
     path("users/code/check/", views.check_verification_code),
     path('users/login/', views.login_user),
     path('users/<int:pk>/requests/', views.get_user_requests),
+    path('users/<int:service_id>/settings/', views.get_service_setting),
+    path('users/<int:pk>/settings/update/', views.ServiceSettingRetrieveUpdate.as_view()),
     path('users/<int:pk>/', views.get_user),
     path('users/switch/', views.switch_user),
     path('users/update/<str:pk>/', views.UpdateSimpleUser.as_view()),

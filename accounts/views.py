@@ -3,11 +3,13 @@ from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from api.models import Category, CategoryHashtag
+from api.serializers import UserRequestSerializer
+from api.utils import get_address_by_coordinates
 from hisay import settings
 from . import helpers
-from .models import SimpleUserProfile
-from .serializers import SimpleUserProfileSerializer
-from api.serializers import UserRequestSerializer
+from .models import SimpleUserProfile, ServiceSetting
+from .serializers import SimpleUserProfileSerializer, ServiceSettingsSerializer
 
 
 @api_view(['POST'])
@@ -138,3 +140,35 @@ def get_user_requests(request, pk):
     user_requests = user.user_requests.all()
     serializer = UserRequestSerializer(user_requests, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_service_setting(request, service_id):
+    service = SimpleUserProfile.objects.get(pk=service_id)
+    print(service.is_service)
+    setting = ServiceSetting.objects.filter(service_profile=service.pk).first()
+    serializer = ServiceSettingsSerializer(setting, many=False)
+    return Response(serializer.data)
+
+
+class ServiceSettingRetrieveUpdate(generics.UpdateAPIView):
+    queryset = ServiceSetting.objects.all()
+    serializer_class = ServiceSettingsSerializer
+
+    def update(self, request, *args, **kwargs):
+        data = request.data
+        category = Category.objects.get(name=data.get('category'))
+        hashtags = list(set(data.get("hashtags").split(', ')))
+
+        for tag in hashtags:
+            tag = tag.replace("#", "")
+            item = CategoryHashtag.objects.create(
+                category=category,
+                tag=tag
+            )
+            item.save()
+
+        obj = ServiceSetting.objects.get(pk=data.get('service_profile'))
+        obj.address_by_location = get_address_by_coordinates(data.get('location'))
+        obj.save()
+        return Response(ServiceSettingsSerializer(obj, many=False).data)
