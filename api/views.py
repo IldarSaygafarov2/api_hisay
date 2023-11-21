@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from accounts.models import SimpleUserProfile
+from accounts.serializers import ServiceProfileSerializer
 from .models import Category, QuestionAnswer, ImageItem, UserRequest, Story, CategoryHashtag, ServiceUserRequestResponse
 from .serializers import (
     CategorySerializer,
@@ -27,8 +28,9 @@ class ServicesRespondedToUserRequest(generics.RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         qs = self.get_queryset().filter(user_request=kwargs['pk'])
         services_ids = list(set([i.service.pk for i in qs]))
-        # TODO: получить данные про сервис и отдать
-
+        services_profiles = SimpleUserProfile.objects.filter(pk__in=services_ids)
+        serializer = ServiceProfileSerializer(services_profiles, many=True)
+        return Response(serializer.data)
 
 
 class CategoryList(generics.ListAPIView):

@@ -7,3 +7,9 @@ class SimpleUserProfileSerializer(serializers.ModelSerializer):
         model = SimpleUserProfile
         fields = ['pk', 'fullname', 'is_service', 'city',
                   'education', 'info_about', 'user_avatar']
+
+
+class ServiceProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SimpleUserProfile
+        fields = ['pk', 'fullname', 'tg_username', 'rating', 'education', 'education', 'info_about', 'city']
