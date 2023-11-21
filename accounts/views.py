@@ -145,30 +145,29 @@ def get_user_requests(request, pk):
 @api_view(['GET'])
 def get_service_setting(request, service_id):
     service = SimpleUserProfile.objects.get(pk=service_id)
-    print(service.is_service)
-    setting = ServiceSetting.objects.filter(service_profile=service.pk).first()
+    print(service)
+    setting = ServiceSetting.objects.filter(service_profile=service).first()
+    print(setting)
     serializer = ServiceSettingsSerializer(setting, many=False)
     return Response(serializer.data)
 
 
-class ServiceSettingRetrieveUpdate(generics.UpdateAPIView):
+class ServiceSettingRetrieveUpdate(generics.RetrieveUpdateAPIView):
     queryset = ServiceSetting.objects.all()
     serializer_class = ServiceSettingsSerializer
 
     def update(self, request, *args, **kwargs):
+        instance = self.get_object()
         data = request.data
-        category = Category.objects.get(name=data.get('category'))
-        hashtags = list(set(data.get("hashtags").split(', ')))
+        instance.address_by_location = get_address_by_coordinates(data.get('location'))
+        instance.service_profile = SimpleUserProfile.objects.get(pk=data.get('service_profile'))
+        instance.passport_series = data.get('passport_series')
+        instance.passport_number = data.get('passport_number')
+        instance.hashtags = data.get('hashtags')
+        instance.category = Category.objects.get(name=request.data.get('category'))
+        instance.education = data.get('education')
+        instance.location = data.get('location')
+        instance.save()
+        serializer = ServiceSettingsSerializer(instance, many=False)
+        return Response(serializer.data)
 
-        for tag in hashtags:
-            tag = tag.replace("#", "")
-            item = CategoryHashtag.objects.create(
-                category=category,
-                tag=tag
-            )
-            item.save()
-
-        obj = ServiceSetting.objects.get(pk=data.get('service_profile'))
-        obj.address_by_location = get_address_by_coordinates(data.get('location'))
-        obj.save()
-        return Response(ServiceSettingsSerializer(obj, many=False).data)
