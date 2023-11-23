@@ -23,6 +23,7 @@ def save_user(request):
 
     user.fullname = data['fullname']
     user.is_service = data['is_service']
+
     user.save()
 
     code = helpers.generate_code()
@@ -109,6 +110,8 @@ def get_user(request, pk):
 @api_view(["POST"])
 def switch_user(request):
     data = request.data
+    services_settings = ServiceSetting.objects.all()
+
     user = SimpleUserProfile.objects.filter(
         phone_number=data["phone_number"]).first()
     if user is None:
@@ -116,6 +119,14 @@ def switch_user(request):
 
     user.is_service = data['is_service']
     user.save()
+
+    if user.is_service:
+        service_settings = ServiceSetting.objects.filter(service_profile=user).first()
+        if service_settings is None:
+            obj = ServiceSetting.objects.create(
+                service_profile=user
+            )
+            obj.save()
     return Response({"status": True})
 
 
@@ -146,8 +157,7 @@ def get_user_requests(request, pk):
 def get_service_setting(request, service_id):
     service = SimpleUserProfile.objects.get(pk=service_id)
     print(service)
-    setting = ServiceSetting.objects.filter(service_profile=service).first()
-    print(setting)
+    setting = ServiceSetting.objects.filter(service_profile=service.pk).first()
     serializer = ServiceSettingsSerializer(setting, many=False)
     return Response(serializer.data)
 
@@ -158,11 +168,12 @@ class ServiceSettingRetrieveUpdate(generics.RetrieveUpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
+
         data = request.data
-        instance.address_by_location = get_address_by_coordinates(data.get('location'))
+        instance.address_by_location = get_address_by_coordinates(data.get('location')) if data.get('location') else ''
         instance.service_profile = SimpleUserProfile.objects.get(pk=data.get('service_profile'))
         instance.passport_series = data.get('passport_series')
-        instance.passport_number = data.get('passport_number')
+        instance.passport_number = data.get('passport_number') if data.get('passport_number') else 0
         instance.hashtags = data.get('hashtags')
         instance.category = Category.objects.get(name=request.data.get('category'))
         instance.education = data.get('education')
@@ -170,4 +181,3 @@ class ServiceSettingRetrieveUpdate(generics.RetrieveUpdateAPIView):
         instance.save()
         serializer = ServiceSettingsSerializer(instance, many=False)
         return Response(serializer.data)
-

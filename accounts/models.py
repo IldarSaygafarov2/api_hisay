@@ -32,7 +32,7 @@ class ServiceSetting(models.Model):
     service_profile = models.ForeignKey(SimpleUserProfile, on_delete=models.CASCADE, verbose_name="Сервис")
     passport_series = models.CharField(max_length=5, verbose_name="Серия паспорта", blank=True, default='')
     passport_number = models.IntegerField(verbose_name="Номер паспорта", blank=True, default=0)
-    hashtags = models.TextField(verbose_name="Хештег")
+    hashtags = models.TextField(verbose_name="Хештег", blank=True, default="")
     category = models.ForeignKey('api.Category', on_delete=models.DO_NOTHING, verbose_name="Категория", blank=True,
                                  null=True)
     info_about = models.TextField(verbose_name="О себе", blank=True, default='')
