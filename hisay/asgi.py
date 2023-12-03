@@ -8,9 +8,9 @@ https://docs.djangoproject.com/en/3.2/howto/deployment/asgi/
 """
 
 import os
-
+from channels.auth import AuthMiddlewareStack
 from channels.routing import URLRouter, ProtocolTypeRouter
-from channels.security.websocket import AllowedHostsOriginValidator  # new
+from channels.security.websocket import AllowedHostsOriginValidator , OriginValidator # new
 from django.core.asgi import get_asgi_application
 from chat import routing  # new
 # from .tokenauth_middleware import TokenAuthMiddleware  # new
@@ -19,6 +19,9 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hisay.settings')
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-    "websocket": AllowedHostsOriginValidator(  # new
-        URLRouter(routing.websocket_urlpatterns))
+    "websocket": OriginValidator(
+        AuthMiddlewareStack(URLRouter(routing.websocket_urlpatterns)),
+        ['https://hisay.pythonanywhere.com']
+    ),
+
 })
