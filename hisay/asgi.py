@@ -19,9 +19,6 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hisay.settings')
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-    "websocket": OriginValidator(
-        AuthMiddlewareStack(URLRouter(routing.websocket_urlpatterns)),
-        ['https://hisay.pythonanywhere.com']
-    ),
-
+    "websocket": AllowedHostsOriginValidator(URLRouter(routing.websocket_urlpatterns)),
+        # ['https://hisay.pythonanywhere.com', 'http://127.0.0.1:8000']
 })
