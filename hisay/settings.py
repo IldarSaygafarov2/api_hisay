@@ -11,11 +11,13 @@ SECRET_KEY = 'django-insecure-tuk0a=1c$c1@vsw(8xtxr7ggyn42idqtovwg7cz1-=%fyy5pvn
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "hisayapi.pythonanywhere.com",
-    "127.0.0.1"
+    # "hisayapi.pythonanywhere.com",
+    # "127.0.0.1"
+    "*"
 ]
 
 INSTALLED_APPS = [
+    'daphne',
     "jazzmin",
     'django.contrib.admin',
     'django.contrib.auth',
@@ -24,9 +26,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_dump_load_utf8',
+    # 'channels',
     'rest_framework',
+
     'accounts.apps.AccountsConfig',
     'api.apps.ApiConfig',
+    'chat.apps.ChatConfig',
+
     'django_filters'
 ]
 
@@ -59,6 +65,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'hisay.wsgi.application'
+ASGI_APPLICATION = 'hisay.asgi.application'
+
 
 DATABASES = {
     'default': {
@@ -247,4 +255,9 @@ MAPS_API_KEY = "AIzaSyBG9BXt7_M-xJA2EvUS6HGhRK8MvpsFqGM"
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
 }
