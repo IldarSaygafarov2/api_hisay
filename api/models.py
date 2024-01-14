@@ -71,17 +71,17 @@ class ImageItem(models.Model):
 
 
 class UserRequest(models.Model):
-    title = models.CharField(verbose_name="Заголовок статьи", max_length=155, default="")
-    body = models.TextField(verbose_name="Описание заявки")
-    location = models.CharField(verbose_name="Локация", max_length=255)
+    title = models.CharField(verbose_name="Заголовок статьи", max_length=155, default="", blank=True, null=True)
+    body = models.TextField(verbose_name="Описание заявки", blank=True, null=True)
+    location = models.CharField(verbose_name="Локация", max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     views = models.IntegerField(default=0, verbose_name="Кол-во просмотров")
     photo = models.ImageField(verbose_name="Фото", upload_to="requests/photos/", null=True, blank=True)
     hashtags = models.TextField(verbose_name="Хештег")
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, related_name="user_requests",
-                                 verbose_name="Категория")
+                                 verbose_name="Категория", blank=True, null=True)
     author = models.ForeignKey(SimpleUserProfile, on_delete=models.CASCADE, related_name="user_requests",
-                               verbose_name="Автор")
+                               verbose_name="Автор", blank=True, null=True)
 
     def __str__(self):
         return f'Заявка от пользователя: {self.author}'
@@ -89,6 +89,12 @@ class UserRequest(models.Model):
     class Meta:
         verbose_name = "Заявка"
         verbose_name_plural = "Заявки"
+
+
+class UserRequestImage(models.Model):
+    user_request = models.ForeignKey(UserRequest, on_delete=models.CASCADE, related_name='images')
+    photo = models.ImageField(verbose_name='Фото', upload_to='request/photos/')
+
 
 
 class Story(models.Model):
