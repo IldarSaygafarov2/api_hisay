@@ -77,6 +77,13 @@ class UserRequest(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     views = models.IntegerField(default=0, verbose_name="Кол-во просмотров")
     photo = models.ImageField(verbose_name="Фото", upload_to="requests/photos/", null=True, blank=True)
+    photo2 = models.ImageField(verbose_name="Фото 2", upload_to="requests/photos/", null=True, blank=True)
+    photo3 = models.ImageField(verbose_name="Фото 3", upload_to="requests/photos/", null=True, blank=True)
+    photo4 = models.ImageField(verbose_name="Фото 4", upload_to="requests/photos/", null=True, blank=True)
+    photo5 = models.ImageField(verbose_name="Фото 5", upload_to="requests/photos/", null=True, blank=True)
+    photo6 = models.ImageField(verbose_name="Фото 6", upload_to="requests/photos/", null=True, blank=True)
+    photo7 = models.ImageField(verbose_name="Фото 7", upload_to="requests/photos/", null=True, blank=True)
+    photo8 = models.ImageField(verbose_name="Фото 8", upload_to="requests/photos/", null=True, blank=True)
     hashtags = models.TextField(verbose_name="Хештег")
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, related_name="user_requests",
                                  verbose_name="Категория", blank=True, null=True)
@@ -89,12 +96,6 @@ class UserRequest(models.Model):
     class Meta:
         verbose_name = "Заявка"
         verbose_name_plural = "Заявки"
-
-
-class UserRequestImage(models.Model):
-    user_request = models.ForeignKey(UserRequest, on_delete=models.CASCADE, related_name='images')
-    photo = models.ImageField(verbose_name='Фото', upload_to='request/photos/')
-
 
 
 class Story(models.Model):

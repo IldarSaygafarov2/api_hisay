@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import Category, CategoryHashtag
+from api.models import Category
 from api.serializers import UserRequestSerializer
 from api.utils import get_address_by_coordinates
 from hisay import settings
@@ -48,7 +48,8 @@ def save_data_from_bot(request):
     try:
         user = SimpleUserProfile.objects.create(**data)
         user.save()
-    except:
+    except Exception as e:
+        print(e)
         return Response({"status": "error"})
     return Response({"status": "ok"})
 
@@ -156,7 +157,6 @@ def get_user_requests(request, pk):
 @api_view(['GET'])
 def get_service_setting(request, service_id):
     service = SimpleUserProfile.objects.get(pk=service_id)
-    print(service)
     setting = ServiceSetting.objects.filter(service_profile=service.pk).first()
     serializer = ServiceSettingsSerializer(setting, many=False)
     return Response(serializer.data)
@@ -165,17 +165,25 @@ def get_service_setting(request, service_id):
 class ServiceSettingRetrieveUpdate(generics.RetrieveUpdateAPIView):
     queryset = ServiceSetting.objects.all()
     serializer_class = ServiceSettingsSerializer
+    lookup_field = 'service_profile_id'
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
 
         data = request.data
-        instance.address_by_location = get_address_by_coordinates(data.get('location')) if data.get('location') else ''
-        instance.service_profile = SimpleUserProfile.objects.get(pk=data.get('service_profile'))
+
+        # objects
+        category = Category.objects.get(name=request.data.get('category'))
+        service_profile = SimpleUserProfile.objects.get(pk=data.get('service_profile'))
+        address = get_address_by_coordinates(data.get('location')) if data.get('location') else ''
+
+        # updating
+        instance.address_by_location = address
+        instance.service_profile = service_profile
         instance.passport_series = data.get('passport_series')
         instance.passport_number = data.get('passport_number') if data.get('passport_number') else 0
         instance.hashtags = data.get('hashtags')
-        instance.category = Category.objects.get(name=request.data.get('category'))
+        instance.category = category
         instance.education = data.get('education')
         instance.location = data.get('location')
         instance.save()

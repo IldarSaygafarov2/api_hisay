@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
-from .models import Category, QuestionAnswer, ImageItem, UserRequest, Story, ServiceUserRequestResponse, \
-    UserRequestImage
+from .models import Category, QuestionAnswer, ImageItem, UserRequest, Story, ServiceUserRequestResponse
 from accounts.models import SimpleUserProfile
 
 
@@ -47,24 +46,12 @@ class ImageItemSerializer(serializers.ModelSerializer):
         fields = ['pk', 'photo']
 
 
-class UserRequestImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserRequestImage
-        fields = ['pk', 'photo']
-
-
 class UserRequestSerializer(serializers.ModelSerializer):
     category = serializers.SlugRelatedField(
         queryset=Category.objects.all(),
         read_only=False,
         slug_field='name'
     )
-
-    # images = serializers.SlugRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     slug_field='images'
-    # )
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -75,4 +62,21 @@ class UserRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserRequest
-        fields = ['pk', 'title', 'body', 'location', 'created_at', 'photo', 'hashtags', 'category', 'author']
+        fields = [
+            'pk',
+            'title',
+            'body',
+            'location',
+            'created_at',
+            'photo',
+            'photo2',
+            'photo3',
+            'photo4',
+            'photo5',
+            'photo6',
+            'photo7',
+            'photo8',
+            'hashtags',
+            'category',
+            'author'
+        ]
